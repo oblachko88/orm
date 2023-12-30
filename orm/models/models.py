@@ -40,7 +40,7 @@ class Publisher(models.Model):
 class User(models.Model):
   username = models.CharField(max_length=100)
   email = models.CharField(max_length=100)
-    
+
   def __str__(self):
     return self.username
 
@@ -75,4 +75,10 @@ ans21 = User.objects.all(pk=1).follower_authors.all().values_list('firstname', f
 ans22 = Authors.objects.all().filter(books__title__icontains='tle')
 ans23 = Authors.objects.filter(Q(firstname__istartswith='a') and ( Q(popularity_score__gt=5) or Q(joindate__year__gt=2014)))
 ans24 = Authors.objects.get(pk=1)
-ans25 = Authors.objects.all().books.title.get()[:10]
+ans25 = Authors.objects.all()[:10]
+# qs = Authors.objects.filter(popularity_score=7)
+# author2 = qs[1]
+# author1 = qs[0]
+qs = Authors.objetcts.filter(popularity_score=7)
+author1 = qs.first()
+author2 = qs.last()
