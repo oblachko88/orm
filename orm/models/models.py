@@ -82,3 +82,5 @@ ans25 = Authors.objects.all()[:10]
 qs = Authors.objetcts.filter(popularity_score=7)
 author1 = qs.first()
 author2 = qs.last()
+
+a = 1 
