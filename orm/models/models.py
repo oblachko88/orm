@@ -3,46 +3,47 @@ from django.db.models import Q
 import datetime
 
 class Author(models.Model):
-  firstname = models.CharField(max_length=100)
-  lastname = models.CharField(max_length=100)
-  address = models.CharField(max_length=200, null=True)
-  zipcode = models.IntegerField(null=True)
-  telephone = models.CharField(max_length=100, null=True)
-  recommendedby = models.ForeignKey('Author', on_delete=models.CASCADE, related_name='recommended_authors', related_query_name='recommended_authors', null=True)
-  joindate = models.DateField()
-  popularity_score = models.IntegerField()
-  followers = models.ManyToManyField('User', related_name='followed_authors', related_query_name='followed_authors')
-    
-  def __str__(self):
-    return self.firstname + ' ' + self.lastname
+	firstname = models.CharField(max_length=100)
+	lastname = models.CharField(max_length=100)
+	address = models.CharField(max_length=200, null=True)
+	zipcode = models.IntegerField(null=True)
+	telephone = models.CharField(max_length=100, null=True)
+	recommendedby = models.ForeignKey('Author', on_delete=models.CASCADE, related_name='recommended_authors', related_query_name='recommended_authors', null=True)
+	joindate = models.DateField()
+	popularity_score = models.IntegerField()
+	followers = models.ManyToManyField('User', related_name='followed_authors', related_query_name='followed_authors')
+
+
+	def __str__(self):
+		return self.firstname + ' ' + self.lastname
 
 class Books(models.Model):
-  title = models.CharField(max_length=100)
-  genre = models.CharField(max_length=200)
-  price = models.IntegerField(null=True)
-  published_date = models.DateField()
-  author = models.ForeignKey('Author', on_delete=models.CASCADE, related_name='books', related_query_name='books')
-  publisher = models.ForeignKey('Publisher', on_delete=models.CASCADE, related_name='books', related_query_name='books')
-    
-  def __str__(self):
-    return self.title
+	title = models.CharField(max_length=100)
+	genre = models.CharField(max_length=200)
+	price = models.IntegerField(null=True)
+	published_date = models.DateField()
+	author = models.ForeignKey('Author', on_delete=models.CASCADE, related_name='books', related_query_name='books')
+	publisher = models.ForeignKey('Publisher', on_delete=models.CASCADE, related_name='books', related_query_name='books')
+	
+	def __str__(self):
+	    return self.title
 
 class Publisher(models.Model):
-  firstname = models.CharField(max_length=100)
-  lastname = models.CharField(max_length=100)
-  recommendedby = models.ForeignKey('Publisher', on_delete=models.CASCADE, null=True)
-  joindate = models.DateField()
-  popularity_score = models.IntegerField()
+	firstname = models.CharField(max_length=100)
+	lastname = models.CharField(max_length=100)
+	recommendedby = models.ForeignKey('Publisher', on_delete=models.CASCADE, null=True)
+	joindate = models.DateField()
+	popularity_score = models.IntegerField()
 
-  def __str__(self):
-    return self.firstname + ' ' + self.lastname
+	def __str__(self):
+		return self.firstname + ' ' + self.lastname
 
 class User(models.Model):
-  username = models.CharField(max_length=100)
-  email = models.CharField(max_length=100)
+	username = models.CharField(max_length=100)
+	email = models.CharField(max_length=100)
 
-  def __str__(self):
-    return self.username
+	def __str__(self):
+		return self.username
 
 ans1 = Books.objects.all()
 ans2 = Books.objects.all().values_list('title', 'publiched_date')
@@ -64,21 +65,29 @@ ans14 = Books.objects.all().filter(author__pk__in=[1,3,4]).aggregate(total_book_
 ans15 = Books.objects.all().values_list('author', 'recommendedby__firstname')
 # ans16 = Author.objets.all().order_by('firstname').filter(books__pk=1)
 ans16 = Authors.objects.all().filter(books__publisher__pk=1)
-user1 = Users.objects.create(username='user1', email=abc@abc.en)
-user2 = Users.objects.create(username='user2', email=efg@efg.en)
-user3 = Users.objects.create(username='user3', email=efg@efg.en)
+user1 = Users.objects.create(username='user1', email='abc@abc.en')
+user2 = Users.objects.create(username='user2', email='efg@efg.en')
+user3 = Users.objects.create(username='user3', email='efg@efg.en')
 ans17 = Authors.objects.get(pk=1).followers.add(user1, user2, user3)
 ans18 = Authors.obects.get(pk=2).followers.set(user1)
 ans19 = Authors.objects.get(pk=1).followers.add(user4)
-ans20 = Authors.objects.get(pk=1).followers.remove(user1)
+ans20 = Authors.objects.get(pk=1).followers.remove(user1) 
 ans21 = User.objects.all(pk=1).follower_authors.all().values_list('firstname', flat=True)
 ans22 = Authors.objects.all().filter(books__title__icontains='tle')
 ans23 = Authors.objects.filter(Q(firstname__istartswith='a') and ( Q(popularity_score__gt=5) or Q(joindate__year__gt=2014)))
 ans24 = Authors.objects.get(pk=1)
 ans25 = Authors.objects.all()[:10]
 # qs = Authors.objects.filter(popularity_score=7)
-# author2 = qs[1]
+# author2 = qs[1] 
 # author1 = qs[0]
 qs = Authors.objetcts.filter(popularity_score=7)
 author1 = qs.first()
 author2 = qs.last()
+ans27 = Authors.objects.filter(
+	pupularity_score__gte=4, 
+	joindate_year__gte=2012, 
+	joindate_year___gte=12, 
+	firstname__istartswith='A'
+	)
+# ans28 = Authors.objects.filter(datetime__year_ne=2012)
+ans28 = Authors.objects.exclude(joindate_year=2012)
