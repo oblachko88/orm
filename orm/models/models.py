@@ -91,3 +91,15 @@ ans27 = Authors.objects.filter(
 	)
 # ans28 = Authors.objects.filter(datetime__year_ne=2012)
 ans28 = Authors.objects.exclude(joindate_year=2012)
+
+oldest_author = Authors.objects.latest('datetime')
+newest_author = Authors.objects.newest('datetime')
+authors_score = Authors.objects.get(popularity_score)
+
+def calculate_avg_score_authors(authors_score):
+	if not authors_score:
+		return None
+	else: 
+		average = sum(authors_score) / len(authors_score)
+		return average
+
