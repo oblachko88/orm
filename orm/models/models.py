@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import Q
 import datetime
 
+
 class Author(models.Model):
 	firstname = models.CharField(max_length=100)
 	lastname = models.CharField(max_length=100)
@@ -13,9 +14,9 @@ class Author(models.Model):
 	popularity_score = models.IntegerField()
 	followers = models.ManyToManyField('User', related_name='followed_authors', related_query_name='followed_authors')
 
-
 	def __str__(self):
 		return self.firstname + ' ' + self.lastname
+
 
 class Books(models.Model):
 	title = models.CharField(max_length=100)
@@ -28,6 +29,7 @@ class Books(models.Model):
 	def __str__(self):
 	    return self.title
 
+
 class Publisher(models.Model):
 	firstname = models.CharField(max_length=100)
 	lastname = models.CharField(max_length=100)
@@ -38,12 +40,17 @@ class Publisher(models.Model):
 	def __str__(self):
 		return self.firstname + ' ' + self.lastname
 
+
 class User(models.Model):
 	username = models.CharField(max_length=100)
 	email = models.CharField(max_length=100)
 
+	def get_object():
+		pass
+
 	def __str__(self):
 		return self.username
+
 
 ans1 = Books.objects.all()
 ans2 = Books.objects.all().values_list('title', 'publiched_date')
@@ -92,9 +99,10 @@ ans27 = Authors.objects.filter(
 # ans28 = Authors.objects.filter(datetime__year_ne=2012)
 ans28 = Authors.objects.exclude(joindate_year=2012)
 
+
 oldest_author = Authors.objects.latest('datetime')
 newest_author = Authors.objects.newest('datetime')
-authors_score = Authors.objects.get(popularity_score)
+authors_score = Authors.objects.filter('popularity_score')
 
 def calculate_avg_score_authors(authors_score):
 	if not authors_score:
@@ -103,3 +111,5 @@ def calculate_avg_score_authors(authors_score):
 		average = sum(authors_score) / len(authors_score)
 		return average
 
+sum_all_price = Books.objects.all().aggregate(sum('price'))
+# sum_all_price = Books.objects.all().sum(('price'))	

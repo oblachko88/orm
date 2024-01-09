@@ -13,6 +13,7 @@ private:
     Node* head;
 
 
+
 public:
     LinkedList() : head(nullptr) {}
 
@@ -30,6 +31,7 @@ public:
         }
         std::cout << std::endl;
     }
+
 
     void reverseList() {
         Node* prev = nullptr;
@@ -61,6 +63,7 @@ public:
 int main() {
     LinkedList myList;
 
+
     myList.insertNode(10);
     myList.insertNode(20);
     myList.insertNode(30);
@@ -75,5 +78,3 @@ int main() {
 
     return 0;
 }
-
-
