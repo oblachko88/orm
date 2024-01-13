@@ -3,6 +3,7 @@ from django.db.models import Q
 import datetime
 
 
+
 class Author(models.Model):
 	firstname = models.CharField(max_length=100)
 	lastname = models.CharField(max_length=100)
@@ -112,4 +113,3 @@ def calculate_avg_score_authors(authors_score):
 		return average
 
 sum_all_price = Books.objects.all().aggregate(sum('price'))
-# sum_all_price = Books.objects.all().sum(('price'))	

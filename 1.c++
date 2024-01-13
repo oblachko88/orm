@@ -48,6 +48,7 @@ public:
         head = prev;
     }
     
+    
     ~LinkedList() {
         Node* current = head;
         Node* nextNode = nullptr;
